@@ -39,46 +39,46 @@ public class MainActivity extends AppCompatActivity {
         progressDoalog.setMessage("Loading....");
         progressDoalog.show();
 
-//        /*Create handle for the RetrofitInstance interface*/
-//        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-//
-//        Call<List<RetroRecipe>> recipe = service.getRecipe();
-//        recipe.enqueue(new Callback<List<RetroRecipe>>() {
-//
-//            @Override
-//            public void onResponse(Call<List<RetroRecipe>> call, Response<List<RetroRecipe>> response) {
-//                progressDoalog.dismiss();
-//                generateRecipeList(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<RetroRecipe>> call, Throwable t) {
-//                progressDoalog.dismiss();
-//
-//                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         /*Create handle for the RetrofitInstance interface*/
-        GetDataIngredient services = RetrofitClientInstance.getRetrofitInstance().create(GetDataIngredient.class);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<Ingredient>> ingredient = services.getIngredient();
-        ingredient.enqueue(new Callback<List<Ingredient>>() {
+        Call<List<RetroRecipe>> recipe = service.getRecipe();
+        recipe.enqueue(new Callback<List<RetroRecipe>>() {
 
             @Override
-            public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
+            public void onResponse(Call<List<RetroRecipe>> call, Response<List<RetroRecipe>> response) {
                 progressDoalog.dismiss();
-                generateIngredientList(response.body());
+                generateRecipeList(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Ingredient>> call, Throwable t) {
+            public void onFailure(Call<List<RetroRecipe>> call, Throwable t) {
                 progressDoalog.dismiss();
+
                 Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-
             }
-
         });
+
+//        /*Create handle for the RetrofitInstance interface*/
+//        GetDataIngredient services = RetrofitClientInstance.getRetrofitInstance().create(GetDataIngredient.class);
+//
+//        Call<List<Ingredient>> ingredient = services.getIngredient();
+//        ingredient.enqueue(new Callback<List<Ingredient>>() {
+//
+//            @Override
+//            public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
+//                progressDoalog.dismiss();
+//                generateIngredientList(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Ingredient>> call, Throwable t) {
+//                progressDoalog.dismiss();
+//                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//        });
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
