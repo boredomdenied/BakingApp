@@ -1,33 +1,71 @@
+
 package com.boredomdenied.bakingapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
 public class RetroRecipe {
 
     @SerializedName("id")
-    private String recipeId;
+    private String id;
     @SerializedName("name")
-    private String recipeName;
+    private String name;
+    @SerializedName("servings")
+    private String servings;
+    @SerializedName("image")
+    private String image;
 
-    public RetroRecipe(String recipeId, String recipeName) {
-        this.recipeId = recipeId;
-        this.recipeName = recipeName;
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public RetroRecipe() {
     }
 
-    public String getRecipeId() {
-        return recipeId;
+    /**
+     *
+     * @param id
+     * @param name
+     * @param image
+     * @param servings
+     */
+    public RetroRecipe(String id, String name, String image, String servings) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.servings = servings;
+        this.image = image;
     }
 
-    public void setRecipeId(String recipeId) {
-        this.recipeId = recipeId;
+    public String getId() {
+        return id;
     }
 
-    public String getRecipeName() {
-        return recipeName;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getServings() {
+        return servings;
+    }
+
+    public void setServings(String servings) {
+        this.servings = servings;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }
