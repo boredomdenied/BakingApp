@@ -3,6 +3,8 @@ package com.boredomdenied.bakingapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class RetroRecipe {
 
     @SerializedName("id")
@@ -13,6 +15,10 @@ public class RetroRecipe {
     private String servings;
     @SerializedName("image")
     private String image;
+    @SerializedName("ingredients")
+    private List<Ingredient> ingredients = null;
+    @SerializedName("steps")
+    private List<Step> steps = null;
 
     /**
      * No args constructor for use in serialization
@@ -28,12 +34,14 @@ public class RetroRecipe {
      * @param image
      * @param servings
      */
-    public RetroRecipe(String id, String name, String image, String servings) {
+    public RetroRecipe(String id, List<Ingredient> ingredients, List<Step> steps, String name, String image, String servings) {
         super();
         this.id = id;
         this.name = name;
         this.servings = servings;
         this.image = image;
+        this.ingredients = ingredients;
+        this.steps = steps;
     }
 
     public String getId() {
@@ -68,4 +76,19 @@ public class RetroRecipe {
         this.image = image;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
 }
