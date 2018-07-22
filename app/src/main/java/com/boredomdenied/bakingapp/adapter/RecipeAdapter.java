@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.boredomdenied.bakingapp.R;
-import com.boredomdenied.bakingapp.model.RetroRecipe;
+import com.boredomdenied.bakingapp.model.Recipe;
 
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CustomViewHolder> {
 
-    private List<RetroRecipe> dataList;
+    private List<Recipe> dataList;
     private Context context;
 
-    public RecipeAdapter(Context context, List<RetroRecipe> dataList){
-        this.context = context;
+    public RecipeAdapter(Context context, List<Recipe> dataList){
         this.dataList = dataList;
     }
 
@@ -28,13 +27,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CustomView
 
         TextView txtId;
         TextView txtName;
+        TextView txtIngredients;
 
         CustomViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
             txtName = mView.findViewById(R.id.name);
-            txtId = mView.findViewById(R.id.ids);
+//            txtId = mView.findViewById(R.id.ids);
+            txtIngredients = mView.findViewById(R.id.ids);
         }
     }
 
@@ -47,8 +48,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CustomView
 
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
+
+        Recipe retroRecipe = dataList.get(position);
+//        holder.txtId.setText(retroRecipe.getId());
+        holder.txtIngredients.setText(retroRecipe.getIngredients().size());
         holder.txtName.setText(dataList.get(position).getName());
-        holder.txtId.setText(dataList.get(position).getId());
+
 
 
     }

@@ -7,7 +7,7 @@ public class Step {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;
@@ -36,7 +36,7 @@ public class Step {
      * @param videoURL
      * @param thumbnailURL
      */
-    public Step(Integer id, String shortDescription, String description, String videoURL, String thumbnailURL) {
+    public Step(String id, String shortDescription, String description, String videoURL, String thumbnailURL) {
         super();
         this.id = id;
         this.shortDescription = shortDescription;
@@ -45,11 +45,11 @@ public class Step {
         this.thumbnailURL = thumbnailURL;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -86,4 +86,3 @@ public class Step {
     }
 
 }
-
