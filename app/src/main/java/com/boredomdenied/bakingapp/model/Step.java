@@ -1,55 +1,20 @@
 package com.boredomdenied.bakingapp.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Step {
-
-    @SerializedName("id")
-    @Expose
-    private String id;
-    @SerializedName("shortDescription")
-    @Expose
+    private int id;
     private String shortDescription;
-    @SerializedName("description")
-    @Expose
     private String description;
-    @SerializedName("videoURL")
-    @Expose
     private String videoURL;
-    @SerializedName("thumbnailURL")
-    @Expose
     private String thumbnailURL;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public Step() {
     }
 
-    /**
-     *
-     * @param id
-     * @param shortDescription
-     * @param description
-     * @param videoURL
-     * @param thumbnailURL
-     */
-    public Step(String id, String shortDescription, String description, String videoURL, String thumbnailURL) {
-        super();
-        this.id = id;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.videoURL = videoURL;
-        this.thumbnailURL = thumbnailURL;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -84,5 +49,4 @@ public class Step {
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
-
 }

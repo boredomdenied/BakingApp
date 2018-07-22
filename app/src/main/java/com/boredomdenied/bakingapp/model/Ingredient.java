@@ -4,42 +4,24 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Ingredient {
-
-    @SerializedName("quantity")
-    @Expose
-    private String quantity;
-    @SerializedName("measure")
-    @Expose
+    private double quantity;
     private String measure;
-    @SerializedName("ingredient")
-    @Expose
     private String ingredient;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public Ingredient() {
     }
 
-    /**
-     *
-     * @param measure
-     * @param ingredient
-     * @param quantity
-     */
-    public Ingredient(String quantity, String measure, String ingredient) {
-        super();
+    public Ingredient(double quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredient = ingredient;
     }
 
-    public String getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -58,5 +40,4 @@ public class Ingredient {
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
-
 }
