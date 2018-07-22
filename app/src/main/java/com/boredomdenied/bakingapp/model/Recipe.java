@@ -1,31 +1,17 @@
 package com.boredomdenied.bakingapp.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Recipe {
 
-    @SerializedName("id")
-    @Expose
+
     private String id;
-    @SerializedName("name")
-    @Expose
     private String name;
-    @SerializedName("ingredients")
-    @Expose
     private List<Ingredient> ingredients = new ArrayList<>();
-    @SerializedName("steps")
-    @Expose
     private List<Step> steps = new ArrayList<>();
-    @SerializedName("servings")
-    @Expose
     private String servings;
-    @SerializedName("image")
-    @Expose
     private String image;
 
     /**
