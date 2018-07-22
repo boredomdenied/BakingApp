@@ -50,7 +50,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Cu
     public void onBindViewHolder(IngredientAdapter.CustomViewHolder holder, int position) {
 
         Ingredient ingredient = ingredientList.get(position);
-//        holder.txtId.setText(ingredient.getId());
+//        holder.txtId.setText(ingredient.getQuantity());
 //        holder.txtIngredients.setText(String.valueOf((ingredient.getIngredients().size())));
 //        holder.txtIngredients.setText(String.valueOf((ingredient.getIngredients())));
         holder.txtName.setText(ingredientList.get(position).getIngredient());

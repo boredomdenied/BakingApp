@@ -1,5 +1,6 @@
 package com.boredomdenied.bakingapp.network;
 
+import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Recipe;
 
 import java.util.List;

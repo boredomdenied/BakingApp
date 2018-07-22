@@ -13,6 +13,7 @@ import com.boredomdenied.bakingapp.adapter.IngredientAdapter;
 import com.boredomdenied.bakingapp.adapter.RecipeAdapter;
 import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Ingredient;
+import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.network.GetDataService;
 import com.boredomdenied.bakingapp.network.RetrofitClientInstance;
 
@@ -25,7 +26,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private RecipeAdapter adapter;
-    private IngredientAdapter ingredientAdapter
+    private IngredientAdapter ingredientAdapter;
     private RecyclerView recyclerView;
     ProgressDialog progressDoalog;
 
@@ -41,18 +42,18 @@ public class MainActivity extends AppCompatActivity {
         /*Create handle for the RetrofitInstance interface*/
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<Ingredient>> call = service.getAllData();
-        call.enqueue(new Callback<List<Ingredient>>() {
+        Call<List<Recipe>> call = service.getAllData();
+        call.enqueue(new Callback<List<Recipe>>() {
 
             @Override
-            public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 progressDoalog.dismiss();
                 generateDataList(response.body());
 
             }
 
             @Override
-            public void onFailure(Call<List<Ingredient>> call, Throwable t) {
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 progressDoalog.dismiss();
                 Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
             }
@@ -60,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
-    private void generateDataList(List<Ingredient> ingredientList) {
+    private void generateDataList(List<Recipe> recipeList) {
+
+        List<Ingredient> ingredients = recipeList.get(1).getIngredients();
         recyclerView = findViewById(R.id.customRecyclerView);
-        ingredientAdapter = new IngredientAdapter(this, ingredientList);
+        ingredientAdapter = new IngredientAdapter(this, ingredients);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(ingredientAdapter);
