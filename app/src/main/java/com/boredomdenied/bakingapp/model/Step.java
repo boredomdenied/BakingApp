@@ -1,20 +1,74 @@
+
 package com.boredomdenied.bakingapp.model;
 
-public class Step {
-    private int id;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
+
+
+public class Step implements Parcelable
+{
+
+
+    private Integer id;
     private String shortDescription;
     private String description;
     private String videoURL;
     private String thumbnailURL;
+    public final static Parcelable.Creator<Step> CREATOR = new Creator<Step>() {
 
+
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        public Step[] newArray(int size) {
+            return (new Step[size]);
+        }
+
+    }
+            ;
+
+    protected Step(Parcel in) {
+        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.shortDescription = ((String) in.readValue((String.class.getClassLoader())));
+        this.description = ((String) in.readValue((String.class.getClassLoader())));
+        this.videoURL = ((String) in.readValue((String.class.getClassLoader())));
+        this.thumbnailURL = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    /**
+     * No args constructor for use in serialization
+     *
+     */
     public Step() {
     }
 
-    public int getId() {
+    /**
+     *
+     * @param id
+     * @param shortDescription
+     * @param description
+     * @param videoURL
+     * @param thumbnailURL
+     */
+    public Step(Integer id, String shortDescription, String description, String videoURL, String thumbnailURL) {
+        super();
+        this.id = id;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,4 +103,17 @@ public class Step {
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(shortDescription);
+        dest.writeValue(description);
+        dest.writeValue(videoURL);
+        dest.writeValue(thumbnailURL);
+    }
+
+    public int describeContents() {
+        return  0;
+    }
+
 }
