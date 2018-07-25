@@ -1,4 +1,4 @@
-package com.boredomdenied.bakingapp;
+package com.boredomdenied.bakingapp.ui;
 
 
 import android.app.ProgressDialog;
@@ -8,11 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.boredomdenied.bakingapp.adapter.IngredientAdapter;
+import com.boredomdenied.bakingapp.R;
 import com.boredomdenied.bakingapp.adapter.IngredientAdapter;
 import com.boredomdenied.bakingapp.adapter.RecipeAdapter;
-import com.boredomdenied.bakingapp.model.Ingredient;
-import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.network.GetDataService;
 import com.boredomdenied.bakingapp.network.RetrofitClientInstance;
@@ -63,13 +61,14 @@ public class MainActivity extends AppCompatActivity {
     /*Method to generate List of data using RecyclerView with custom adapter*/
     private void generateDataList(List<Recipe> recipeList) {
 
-        List<Ingredient> ingredients = recipeList.get(1).getIngredients();
         recyclerView = findViewById(R.id.customRecyclerView);
-        ingredientAdapter = new IngredientAdapter(this, ingredients);
+        adapter = new RecipeAdapter(this, recipeList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(ingredientAdapter);
+        recyclerView.setAdapter(adapter);
     }
+
+
 
 
 }

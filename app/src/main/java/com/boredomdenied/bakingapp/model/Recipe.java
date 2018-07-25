@@ -1,18 +1,47 @@
+
 package com.boredomdenied.bakingapp.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 
 
-public class Recipe {
+public class Recipe implements Parcelable
+{
 
 
-    private String id;
+    private Integer id;
     private String name;
-    private List<Ingredient> ingredients = new ArrayList<>();
-    private List<Step> steps = new ArrayList<>();
-    private String servings;
+    private List<Ingredient> ingredients = null;
+    private List<Step> steps = null;
+    private Integer servings;
     private String image;
+    public final static Parcelable.Creator<Recipe> CREATOR = new Creator<Recipe>() {
+
+
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        public Recipe[] newArray(int size) {
+            return (new Recipe[size]);
+        }
+
+    }
+            ;
+
+    protected Recipe(Parcel in) {
+        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.ingredients, (com.boredomdenied.bakingapp.model.Ingredient.class.getClassLoader()));
+        in.readList(this.steps, (com.boredomdenied.bakingapp.model.Step.class.getClassLoader()));
+        this.servings = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.image = ((String) in.readValue((String.class.getClassLoader())));
+    }
 
     /**
      * No args constructor for use in serialization
@@ -30,7 +59,7 @@ public class Recipe {
      * @param image
      * @param steps
      */
-    public Recipe(String id, String name) {
+    public Recipe(Integer id, String name, List<Ingredient> ingredients, List<Step> steps, Integer servings, String image) {
         super();
         this.id = id;
         this.name = name;
@@ -40,11 +69,11 @@ public class Recipe {
         this.image = image;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -72,11 +101,11 @@ public class Recipe {
         this.steps = steps;
     }
 
-    public String getServings() {
+    public Integer getServings() {
         return servings;
     }
 
-    public void setServings(String servings) {
+    public void setServings(Integer servings) {
         this.servings = servings;
     }
 
@@ -86,6 +115,19 @@ public class Recipe {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(name);
+        dest.writeList(ingredients);
+        dest.writeList(steps);
+        dest.writeValue(servings);
+        dest.writeValue(image);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }
