@@ -4,10 +4,12 @@ package com.boredomdenied.bakingapp.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
@@ -28,10 +30,19 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private IngredientAdapter ingredientAdapter;
     private StepAdapter stepAdapter;
     private RecyclerView recyclerView;
-    ProgressDialog progressDoalog;
+    ProgressDialog progressDialog;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
     @Override
@@ -39,52 +50,56 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        progressDoalog = new ProgressDialog(DetailActivity.this);
-        progressDoalog.setMessage("Loading....");
-        progressDoalog.show();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /*Create handle for the RetrofitInstance interface*/
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        progressDialog = new ProgressDialog(DetailActivity.this);
+        progressDialog.setMessage("Loading....");
+        progressDialog.show();
 
-        Call<List<Recipe>> call = service.getAllData();
-        call.enqueue(new Callback<List<Recipe>>() {
+        if(getIntent().hasExtra("recipes"))  {
+                    final Recipe recipe = getIntent().getParcelableExtra("recipes");
+            Toast.makeText(DetailActivity.this, "has recipes", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailActivity.this, recipe.getName(), Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                progressDoalog.dismiss();
-                generateDataList(response.body());
 
-            }
+        } else  {
+            Toast.makeText(DetailActivity.this, "no recipes", Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                progressDoalog.dismiss();
-                Toast.makeText(DetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        }
 
-    /*Method to generate List of data using RecyclerView with custom adapter*/
-    private void generateDataList(List<Recipe> recipeList) {
+        //        final Recipe recipe = getIntent().getParcelableExtra("recipes");
 
-        int recipeId = getIntent().getIntExtra("recipe", 1) - 1;
-//        List<Ingredient> ingredients = recipeList.get(recipeId).getIngredients();
-//        recyclerView = findViewById(R.id.ingredientRecyclerView);
-//        ingredientAdapter = new IngredientAdapter(this, ingredients);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(DetailActivity.this);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(ingredientAdapter);
+
+//        Log.d("recipes: ", (String.valueOf(recipe.getId())));
+
+//        Toast.makeText(DetailActivity.this, (String.valueOf(recipe.getId())), Toast.LENGTH_SHORT).show();
 
 //        int recipeId = getIntent().getIntExtra("recipe", 1) - 1;
-        List<Step> steps = recipeList.get(recipeId).getSteps();
-        recyclerView = findViewById(R.id.stepRecyclerView);
-        stepAdapter = new StepAdapter(this, steps);
-        RecyclerView.LayoutManager layoutManagers = new LinearLayoutManager(DetailActivity.this);
-        recyclerView.setLayoutManager(layoutManagers);
-        recyclerView.setAdapter(stepAdapter);
 
+//        List<Step> steps = recipe.getSteps();
+//        recyclerView = findViewById(R.id.stepRecyclerView);
+//        stepAdapter = new StepAdapter(this, steps);
+//        RecyclerView.LayoutManager layoutManagers = new LinearLayoutManager(DetailActivity.this);
+//        recyclerView.setLayoutManager(layoutManagers);
+//        recyclerView.setAdapter(stepAdapter);
 
     }
+
+//    /*Method to generate List of data using RecyclerView with custom adapter*/
+//    private void generateDataList(List<Recipe> recipeList) {
+//
+//        List<Recipe> recipes = getIntent().getParcelableExtra("recipes");
+//        int recipeId = getIntent().getIntExtra("recipe", 1) - 1;
+//
+//        List<Step> steps = recipes.get(recipeId).getSteps();
+//        recyclerView = findViewById(R.id.stepRecyclerView);
+//        stepAdapter = new StepAdapter(this, steps);
+//        RecyclerView.LayoutManager layoutManagers = new LinearLayoutManager(DetailActivity.this);
+//        recyclerView.setLayoutManager(layoutManagers);
+//        recyclerView.setAdapter(stepAdapter);
+//
+//
+//    }
 
 
 
