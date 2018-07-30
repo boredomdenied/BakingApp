@@ -11,14 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.RecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailActivity" />
+        <activity
+            android:name=".ui.RecipeListActivity"
+            android:label="@string/title_item_list"
+            android:parentActivityName=".ui.RecipeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.boredomdenied.bakingapp.ui.RecipeActivity" />
+        </activity>
+        <activity
+            android:name=".ui.RecipeDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName=".ui.RecipeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.boredomdenied.bakingapp.ui.RecipeListActivity" />
+        </activity>
     </application>
 
 </manifest>

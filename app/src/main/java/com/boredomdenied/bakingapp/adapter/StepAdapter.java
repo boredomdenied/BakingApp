@@ -51,9 +51,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.CustomViewHold
     public void onBindViewHolder(StepAdapter.CustomViewHolder holder, int position) {
 
         Step step = stepList.get(position);
-//        holder.txtId.setText(ingredient.getQuantity());
-//        holder.txtIngredients.setText(String.valueOf((ingredient.getIngredients().size())));
-//        holder.txtIngredients.setText(String.valueOf((ingredient.getIngredients())));
         holder.txtName.setText(String.valueOf((step.getDescription())));
 
 

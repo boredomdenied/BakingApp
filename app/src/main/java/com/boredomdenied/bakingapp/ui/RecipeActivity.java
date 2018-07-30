@@ -21,19 +21,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.ListItemClickListener {
 
     private RecipeAdapter adapter;
-    private IngredientAdapter ingredientAdapter;
     private RecyclerView recyclerView;
     ProgressDialog progressDoalog;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe);
 
-        progressDoalog = new ProgressDialog(MainActivity.this);
+        progressDoalog = new ProgressDialog(RecipeActivity.this);
         progressDoalog.setMessage("Loading....");
         progressDoalog.show();
 
@@ -53,22 +53,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 progressDoalog.dismiss();
-                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecipeActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
     private void generateDataList(List<Recipe> recipeList) {
 
         recyclerView = findViewById(R.id.customRecyclerView);
-        adapter = new RecipeAdapter(this, recipeList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        adapter = new RecipeAdapter(this, recipeList, );
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RecipeActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
 
 
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        if (toast != null) {
+            toast.cancel();
+        }
 
 
+        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
+        toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+
+        toast.show();
+    }
 }
