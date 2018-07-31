@@ -1,73 +1,35 @@
-
 package com.boredomdenied.bakingapp.model;
 
-import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
+import java.util.ArrayList;
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Recipe implements Parcelable
-{
+public class Recipe implements Parcelable {
 
-
+    @SerializedName("id")
+    @Expose
     private Integer id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("ingredients")
+    @Expose
     private List<Ingredient> ingredients = null;
+    @SerializedName("steps")
+    @Expose
     private List<Step> steps = null;
+    @SerializedName("servings")
+    @Expose
     private Integer servings;
+    @SerializedName("image")
+    @Expose
     private String image;
-    public final static Parcelable.Creator<Recipe> CREATOR = new Creator<Recipe>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public Recipe createFromParcel(Parcel in) {
-            return new Recipe(in);
-        }
-
-        public Recipe[] newArray(int size) {
-            return (new Recipe[size]);
-        }
-
-    }
-            ;
-
-    protected Recipe(Parcel in) {
-        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.ingredients, (com.boredomdenied.bakingapp.model.Ingredient.class.getClassLoader()));
-        in.readList(this.steps, (com.boredomdenied.bakingapp.model.Step.class.getClassLoader()));
-        this.servings = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.image = ((String) in.readValue((String.class.getClassLoader())));
-    }
-
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public Recipe() {
-    }
-
-    /**
-     *
-     * @param ingredients
-     * @param id
-     * @param servings
-     * @param name
-     * @param image
-     * @param steps
-     */
-    public Recipe(Integer id, String name, List<Ingredient> ingredients, List<Step> steps, Integer servings, String image) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients;
-        this.steps = steps;
-        this.servings = servings;
-        this.image = image;
-    }
+    private int imageId;
 
     public Integer getId() {
         return id;
@@ -117,17 +79,57 @@ public class Recipe implements Parcelable
         this.image = image;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(name);
-        dest.writeList(ingredients);
-        dest.writeList(steps);
-        dest.writeValue(servings);
-        dest.writeValue(image);
+    public void setImageId (int imageId) { this.imageId = imageId;}
+
+    public int getImageId () { return imageId;}
+
+    public ArrayList<String> getShortDescriptionsFromSteps (){
+        ArrayList<String> result = new ArrayList<>();
+        result.add("Recipe Ingredients");
+        for (int i = 0; i<steps.size(); i++){
+            result.add(steps.get(i).getShortDescription());
+        }
+        return result;
     }
 
+    @Override
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.name);
+        dest.writeList(this.ingredients);
+        dest.writeList(this.steps);
+        dest.writeValue(this.servings);
+        dest.writeString(this.image);
+    }
+
+    public Recipe() {
+    }
+
+    protected Recipe(Parcel in) {
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.name = in.readString();
+        this.ingredients = new ArrayList<Ingredient>();
+        in.readList(this.ingredients, Ingredient.class.getClassLoader());
+        this.steps = new ArrayList<Step>();
+        in.readList(this.steps, Step.class.getClassLoader());
+        this.servings = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.image = in.readString();
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

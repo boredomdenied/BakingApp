@@ -1,6 +1,5 @@
 package com.boredomdenied.bakingapp.ui;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +11,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
-import com.boredomdenied.bakingapp.adapter.IngredientAdapter;
 import com.boredomdenied.bakingapp.adapter.RecipeAdapter;
 import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.network.GetDataService;
 import com.boredomdenied.bakingapp.network.RetrofitClientInstance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,9 +27,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
     private RecipeAdapter adapter;
     private RecyclerView recyclerView;
-    ProgressDialog progressDoalog;
-    private Toast toast;
-    private Recipe recipe;
+    ProgressDialog progressDialog;
     public List<Recipe> recipeList;
 
     @Override
@@ -38,11 +35,10 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        progressDoalog = new ProgressDialog(RecipeActivity.this);
-        progressDoalog.setMessage("Loading....");
-        progressDoalog.show();
+        progressDialog = new ProgressDialog(RecipeActivity.this);
+        progressDialog.setMessage("Loading....");
+        progressDialog.show();
 
-        /*Create handle for the RetrofitInstance interface*/
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<List<Recipe>> call = service.getAllData();
@@ -50,13 +46,15 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                progressDoalog.dismiss();
+                progressDialog.dismiss();
                 generateDataList(response.body());
+                recipeList = response.body();
+
             }
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                progressDoalog.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(RecipeActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -64,7 +62,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
     }
 
-    /*Method to generate List of data using RecyclerView with custom adapter*/
     private void generateDataList(List<Recipe> recipeList) {
 
         recyclerView = findViewById(R.id.customRecyclerView);
@@ -76,19 +73,17 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
 
     @Override
-    public void onListItemClick(int clickedItemIndex, List<Recipe> recipeList) {
-        if (toast != null) {
-            toast.cancel();
-        }
+    public void onListItemClick(int clickedItemIndex) {
+
 
                 Intent intent = new Intent(this, RecipeListActivity.class);
-                intent.putExtra("recipe", (Parcelable) recipeList);
-                this.startActivity(intent);
+                intent.putParcelableArrayListExtra("recipe", (ArrayList<? extends Parcelable>) recipeList);
+                intent.putExtra("index", clickedItemIndex);
+                        Log.d("onListItemClick", "onClick: clicked on " + recipeList.get(clickedItemIndex).getId());
+
+        this.startActivity(intent);
 
 
-        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
-        toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
-        toast.show();
     }
 }
