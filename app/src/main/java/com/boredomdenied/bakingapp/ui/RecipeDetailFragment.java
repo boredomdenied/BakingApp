@@ -1,6 +1,8 @@
 package com.boredomdenied.bakingapp.ui;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.boredomdenied.bakingapp.R;
+import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.ui.dummy.DummyContent;
 
 /**
- * A fragment representing a single Item detail screen.
+ * A fragment representing a single Recipe detail screen.
  * This fragment is either contained in a {@link RecipeListActivity}
  * in two-pane mode (on tablets) or a {@link RecipeDetailActivity}
  * on handsets.
@@ -46,9 +49,11 @@ public class RecipeDetailFragment extends Fragment {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+//            intent.putExtra("recipe", (Parcelable) recipeList);
+
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.content);
             }
@@ -62,7 +67,7 @@ public class RecipeDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.details);
+            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.details);
         }
 
         return rootView;

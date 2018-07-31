@@ -16,20 +16,20 @@ import static java.lang.String.valueOf;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    private List<Recipe> dataList;
+    private List<Recipe> recipeList;
     private Context context;
     private ListItemClickListener onClickListener;
 
 
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        void onListItemClick(int clickedItemIndex, List<Recipe> recipeList);
     }
 
 
 
-    public RecipeAdapter(Context context, List<Recipe> dataList, ListItemClickListener listener){
+    public RecipeAdapter(Context context, List<Recipe> recipeList, ListItemClickListener listener){
         this.onClickListener = listener;
-        this.dataList = dataList;
+        this.recipeList = recipeList;
         this.context = context;
     }
 
@@ -44,15 +44,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.txtName.setText(dataList.get(position).getName());
-        holder.txtServings.setText(String.valueOf(dataList.get(position).getServings()) + " servings");
+        holder.txtName.setText(recipeList.get(position).getName());
+        holder.txtServings.setText(String.valueOf(recipeList.get(position).getServings()) + " servings");
 
 //        View.OnClickListener listener = new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //
-//                int ID = dataList.get(position).getId();
-//                Log.d(TAG, "onClick: clicked on " + dataList.get(position).getId());
+//                int ID = recipeList.get(position).getId();
+//                Log.d(TAG, "onClick: clicked on " + recipeList.get(position).getId());
 //                Intent intent = new Intent(context, RecipeListActivity.class);
 //                intent.putExtra("recipe", ID);
 //                context.startActivity(intent);
@@ -65,7 +65,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return recipeList.size();
     }
 
 
@@ -89,7 +89,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            onClickListener.onListItemClick(clickedPosition);
+            onClickListener.onListItemClick(clickedPosition, recipeList);
         }
     }
 

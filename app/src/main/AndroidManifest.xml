@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".ui.RecipeListActivity"
-            android:label="@string/title_item_list"
+            android:label="@string/title_recipe_list"
             android:parentActivityName=".ui.RecipeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -29,7 +29,7 @@
         </activity>
         <activity
             android:name=".ui.RecipeDetailActivity"
-            android:label="@string/title_item_detail"
+            android:label="@string/title_recipe_detail"
             android:parentActivityName=".ui.RecipeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
