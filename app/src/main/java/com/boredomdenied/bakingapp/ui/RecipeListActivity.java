@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +18,17 @@ import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
 
-import com.boredomdenied.bakingapp.adapter.StepAdapter;
-import com.boredomdenied.bakingapp.model.Step;
-import com.boredomdenied.bakingapp.model.Step;
+import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.ui.dummy.DummyContent;
 
 import java.util.List;
 
 /**
- * An activity representing a list of Items. This activity
+ * An activity representing a list of Recipes. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
  * lead to a {@link RecipeDetailActivity} representing
@@ -37,30 +37,39 @@ import java.util.List;
  */
 public class RecipeListActivity extends AppCompatActivity {
 
-    private static final Object Step = null;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    public static List<Recipe> recipeList;
+    private Recipe recipe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        if (findViewById(R.id.item_detail_container) != null) {
+        if (findViewById(R.id.recipe_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -68,9 +77,20 @@ public class RecipeListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.item_list);
+        View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+
+        final Recipe recipe = getIntent().getParcelableExtra("recipe");
+
+        if(getIntent().hasExtra("recipe")) {
+            Toast.makeText(this, "Have RecipeList", Toast.LENGTH_SHORT).show();
+            Log.d("RecipeList:", recipe.getImage());
+
+        } else {
+            Toast.makeText(this, "No RecipeList", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override
@@ -91,33 +111,32 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-//        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, , mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final RecipeListActivity mParentActivity;
-//        private final List<DummyContent.DummyItem> mValues;
-        private final List<Step> mValues;
+        private final List<DummyContent.DummyItem> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Step item = (Step) view.getTag();
+                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-//                    arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
-                    arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.getId().toString());
+                    arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
+                            .replace(R.id.recipe_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item.getId());
+                    intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra("recipe", (Parcelable) recipeList);
 
                     context.startActivity(intent);
                 }
@@ -125,9 +144,9 @@ public class RecipeListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(RecipeListActivity parent,
-                                      List<Step> stepList,
+                                      List<DummyContent.DummyItem> items,
                                       boolean twoPane) {
-            mValues = stepList;
+            mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
         }
@@ -141,8 +160,8 @@ public class RecipeListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).getId());
-            holder.mContentView.setText(mValues.get(position).getDescription());
+            holder.mIdView.setText(mValues.get(position).id);
+            holder.mContentView.setText(mValues.get(position).content);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -159,8 +178,8 @@ public class RecipeListActivity extends AppCompatActivity {
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = view.findViewById(R.id.id_text);
-                mContentView = view.findViewById(R.id.content);
+                mIdView = (TextView) view.findViewById(R.id.id_text);
+                mContentView = (TextView) view.findViewById(R.id.content);
             }
         }
     }

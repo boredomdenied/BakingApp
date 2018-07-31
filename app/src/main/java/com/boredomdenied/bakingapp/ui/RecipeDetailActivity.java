@@ -5,15 +5,18 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
+import com.boredomdenied.bakingapp.model.Recipe;
 
 /**
- * An activity representing a single Item detail screen. This
+ * An activity representing a single Recipe detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link RecipeListActivity}.
@@ -24,9 +27,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -52,8 +63,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
+                    .add(R.id.recipe_detail_container, fragment)
                     .commit();
+        }
+
+        final Recipe recipe = getIntent().getParcelableExtra("recipe");
+
+        if(getIntent().hasExtra("recipe")) {
+            Toast.makeText(this, "Have RecipeList", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "No RecipeList", Toast.LENGTH_SHORT).show();
+
         }
     }
 

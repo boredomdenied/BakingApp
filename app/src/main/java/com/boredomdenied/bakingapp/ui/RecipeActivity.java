@@ -2,10 +2,13 @@ package com.boredomdenied.bakingapp.ui;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
@@ -27,6 +30,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
     private RecyclerView recyclerView;
     ProgressDialog progressDoalog;
     private Toast toast;
+    private Recipe recipe;
+    public List<Recipe> recipeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 progressDoalog.dismiss();
                 generateDataList(response.body());
-
             }
 
             @Override
@@ -64,7 +68,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
     private void generateDataList(List<Recipe> recipeList) {
 
         recyclerView = findViewById(R.id.customRecyclerView);
-        adapter = new RecipeAdapter(this, recipeList, );
+        adapter = new RecipeAdapter(this, recipeList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RecipeActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -72,10 +76,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onListItemClick(int clickedItemIndex, List<Recipe> recipeList) {
         if (toast != null) {
             toast.cancel();
         }
+
+                Intent intent = new Intent(this, RecipeListActivity.class);
+                intent.putExtra("recipe", (Parcelable) recipeList);
+                this.startActivity(intent);
 
 
         String toastMessage = "Item #" + clickedItemIndex + " clicked.";
