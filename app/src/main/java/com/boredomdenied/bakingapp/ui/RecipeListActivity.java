@@ -8,8 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,28 +20,16 @@ import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
 
+import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Recipe;
-import com.boredomdenied.bakingapp.ui.dummy.DummyContent;
+import com.boredomdenied.bakingapp.model.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An activity representing a list of Recipes. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link RecipeDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity  {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private boolean mTwoPane;
-    public static List<Recipe> recipeList;
-    private Recipe recipe;
 
 
     @Override
@@ -51,29 +37,18 @@ public class RecipeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        // Show the Up button in the action bar.
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         if (findViewById(R.id.recipe_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
+
             mTwoPane = true;
         }
 
@@ -81,11 +56,13 @@ public class RecipeListActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
-        final Recipe recipe = getIntent().getParcelableExtra("recipe");
+        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
+        final int index = getIntent().getIntExtra("index", 0);
+
 
         if(getIntent().hasExtra("recipe")) {
-            Toast.makeText(this, "Have RecipeList", Toast.LENGTH_SHORT).show();
-            Log.d("RecipeList:", recipe.getImage());
+            Toast.makeText(this, "Have Recipe: " + recipes.get(index).getName(), Toast.LENGTH_SHORT).show();
+            Log.d("RecipeList:", recipes.get(index).getName());
 
         } else {
             Toast.makeText(this, "No RecipeList", Toast.LENGTH_SHORT).show();
@@ -97,13 +74,7 @@ public class RecipeListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
+
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
@@ -111,76 +82,99 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
+        final int index = getIntent().getIntExtra("index", 0);
+
+        List<Ingredient> ingredientList = recipes.get(index).getIngredients();
+        List<Step> stepList = recipes.get(index).getSteps();
+        recipeListAdapter.StepItemClickListener onClickListener = null;
+
+        recyclerView.setAdapter(new recipeListAdapter(this, ingredientList, stepList, onClickListener));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    @Override
+    public void onStepItemClick(int clickedItemIndex) {
+        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
+        final int index = getIntent().getIntExtra("index", 0);
 
-        private final RecipeListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
-        private final boolean mTwoPane;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
-                    RecipeDetailFragment fragment = new RecipeDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.recipe_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item.id);
-                    intent.putExtra("recipe", (Parcelable) recipeList);
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putParcelableArrayListExtra("recipe", (ArrayList<? extends Parcelable>) recipes);
+        intent.putExtra("index", clickedItemIndex);
+        Log.d("onListItemClick", "onClick: clicked on " + recipes.get(clickedItemIndex).getId());
 
-                    context.startActivity(intent);
-                }
-            }
-        };
+        this.startActivity(intent);
+    }
 
-        SimpleItemRecyclerViewAdapter(RecipeListActivity parent,
-                                      List<DummyContent.DummyItem> items,
-                                      boolean twoPane) {
-            mValues = items;
-            mParentActivity = parent;
-            mTwoPane = twoPane;
+    public static class recipeListAdapter extends RecyclerView.Adapter<recipeListAdapter.CustomViewHolder> {
+
+        private List<Step> stepList;
+        private List<Ingredient> ingredientList;
+        private Context context;
+        private StepItemClickListener onClickListener;
+
+        public interface StepItemClickListener {
+            void onStepItemClick(int clickedItemIndex);
+        }
+
+
+        public recipeListAdapter(Context context, List<Ingredient> ingredientList,
+                                 List<Step> stepList, recipeListAdapter.StepItemClickListener listener){
+            this.onClickListener = listener;
+            this.ingredientList = ingredientList;
+            this.stepList = stepList;
+            this.context = context;
+        }
+
+
+        @Override
+        public recipeListAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view = layoutInflater.inflate(R.layout.custom_row, parent, false);
+            return new recipeListAdapter.CustomViewHolder(view);
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recipe_list_content, parent, false);
-            return new ViewHolder(view);
-        }
+        public void onBindViewHolder(CustomViewHolder holder, int position) {
+            Step step = stepList.get(position);
+            Ingredient ingredient = ingredientList.get(position);
+            holder.txtServings.setText(step.getDescription());
+            holder.txtName.setText(String.valueOf((ingredient.getIngredient())));
 
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
 
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return ingredientList.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-            ViewHolder(View view) {
-                super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-        }
+
+            public final View mView;
+
+            TextView txtName;
+            TextView txtServings;
+
+            CustomViewHolder(View itemView) {
+                super(itemView);
+                mView = itemView;
+
+                txtName = mView.findViewById(R.id.name);
+                txtServings = mView.findViewById(R.id.servings);
+
+                itemView.setOnClickListener(this);
+                }
+
+            @Override
+            public void onClick(View v) {
+
+                int clickedPosition = getAdapterPosition();
+                onClickListener.onStepItemClick(clickedPosition);
+            }        }
+
     }
+
+
+
 }

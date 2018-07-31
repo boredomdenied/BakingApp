@@ -22,7 +22,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
 
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex, List<Recipe> recipeList);
+        void onListItemClick(int clickedItemIndex);
     }
 
 
@@ -47,19 +47,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         holder.txtName.setText(recipeList.get(position).getName());
         holder.txtServings.setText(String.valueOf(recipeList.get(position).getServings()) + " servings");
 
-//        View.OnClickListener listener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                int ID = recipeList.get(position).getId();
-//                Log.d(TAG, "onClick: clicked on " + recipeList.get(position).getId());
-//                Intent intent = new Intent(context, RecipeListActivity.class);
-//                intent.putExtra("recipe", ID);
-//                context.startActivity(intent);
-//
-//             }
-//        };
-//        holder.mView.setOnClickListener(listener);
     }
 
 
@@ -89,8 +76,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            onClickListener.onListItemClick(clickedPosition, recipeList);
+            onClickListener.onListItemClick(clickedPosition);
         }
     }
-
 }
