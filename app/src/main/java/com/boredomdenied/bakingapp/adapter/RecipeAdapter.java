@@ -42,7 +42,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.txtName.setText(recipeList.get(position).getName());
         holder.txtServings.setText(String.valueOf(recipeList.get(position).getServings()) + " servings");

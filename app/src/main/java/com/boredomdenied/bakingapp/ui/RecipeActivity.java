@@ -65,6 +65,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
     private void generateDataList(List<Recipe> recipeList) {
 
         recyclerView = findViewById(R.id.customRecyclerView);
+        assert recyclerView != null;
         adapter = new RecipeAdapter(this, recipeList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RecipeActivity.this);
         recyclerView.setLayoutManager(layoutManager);
