@@ -18,7 +18,6 @@ import java.util.List;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.CustomViewHolder> {
 
     private List<Step> stepList;
-//    private List<Ingredient> ingredientList;
     private Context context;
     private StepItemClickListener onClickListener;
 
@@ -31,7 +30,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Cu
     public RecipeListAdapter(Context context,
                              List<Step> stepList, StepItemClickListener listener){
         this.onClickListener = listener;
-//        this.ingredientList = ingredientList;
         this.stepList = stepList;
         this.context = context;
     }
