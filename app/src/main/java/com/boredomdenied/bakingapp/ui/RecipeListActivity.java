@@ -87,7 +87,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListA
         List<Step> stepList = recipes.get(index).getSteps();
         RecipeListAdapter.StepItemClickListener onClickListener = null;
 
-        recyclerView.setAdapter(new RecipeListAdapter(this, ingredientList, stepList, onClickListener));
+        recyclerView.setAdapter(new RecipeListAdapter(this, stepList, onClickListener));
     }
 
     @Override
