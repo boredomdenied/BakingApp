@@ -18,7 +18,7 @@ import java.util.List;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.CustomViewHolder> {
 
     private List<Step> stepList;
-    private List<Ingredient> ingredientList;
+//    private List<Ingredient> ingredientList;
     private Context context;
     private StepItemClickListener onClickListener;
 
@@ -28,10 +28,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Cu
     }
 
 
-    public RecipeListAdapter(Context context, List<Ingredient> ingredientList,
+    public RecipeListAdapter(Context context,
                              List<Step> stepList, StepItemClickListener listener){
         this.onClickListener = listener;
-        this.ingredientList = ingredientList;
+//        this.ingredientList = ingredientList;
         this.stepList = stepList;
         this.context = context;
     }
@@ -47,16 +47,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Cu
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
         Step step = stepList.get(position);
-        Ingredient ingredient = ingredientList.get(position);
+//        Ingredient ingredient = ingredientList.get(position);
         holder.txtServings.setText(step.getDescription());
-        holder.txtName.setText(String.valueOf((ingredient.getIngredient())));
+//        holder.txtName.setText(String.valueOf((ingredient.getIngredient())));
+        holder.txtName.setText(String.valueOf((step.getShortDescription())));
 
 
     }
 
     @Override
     public int getItemCount() {
-        return ingredientList.size();
+        return stepList.size();
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
