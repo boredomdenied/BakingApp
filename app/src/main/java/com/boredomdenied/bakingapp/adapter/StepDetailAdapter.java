@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.boredomdenied.bakingapp.R;
-import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Step;
 
 import java.util.List;
 
-public class StepAdapter extends RecyclerView.Adapter<StepAdapter.CustomViewHolder> {
+public class StepDetailAdapter extends RecyclerView.Adapter<StepDetailAdapter.CustomViewHolder> {
 
     private List<Step> stepList;
     private Context context;
 
-    public StepAdapter(Context context, List<Step> stepList){
+    public StepDetailAdapter(Context context, List<Step> stepList){
         this.stepList = stepList;
         this.context = context;
     }
@@ -41,14 +40,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.CustomViewHold
     }
 
     @Override
-    public StepAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StepDetailAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.custom_row, parent, false);
-        return new StepAdapter.CustomViewHolder(view);
+        return new StepDetailAdapter.CustomViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(StepAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(StepDetailAdapter.CustomViewHolder holder, int position) {
 
         Step step = stepList.get(position);
         holder.txtName.setText(String.valueOf((step.getDescription())));
