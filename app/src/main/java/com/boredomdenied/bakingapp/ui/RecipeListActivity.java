@@ -2,7 +2,6 @@ package com.boredomdenied.bakingapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +11,13 @@ import android.view.View;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
 
-import com.boredomdenied.bakingapp.adapter.RecipeListAdapter;
+import com.boredomdenied.bakingapp.adapter.RecipeDetailAdapter;
 import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.model.Step;
@@ -24,11 +25,11 @@ import com.boredomdenied.bakingapp.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeListActivity extends AppCompatActivity implements RecipeListAdapter.StepItemClickListener {
+public class RecipeListActivity extends AppCompatActivity implements RecipeDetailAdapter.StepItemClickListener {
 
 
     private boolean mTwoPane;
-
+    private ListView mainListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,27 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListA
             mTwoPane = true;
         }
 
+        mainListView = findViewById(R.id.mainListView);
+        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
+        final int index = getIntent().getIntExtra("index", 0);
+        List<Ingredient> ingredientList = recipes.get(index).getIngredients();
+
+
+        ArrayList<String> ingredientItems = new ArrayList<>();
+        for (int i = 0; i < ingredientList.size(); i++) {
+            Log.d("ingredient", ingredientList.get(i).getIngredient());
+            ingredientItems.add(ingredientList.get(i).getIngredient());
+        }
+
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.ingredient_row, ingredientItems);
+        mainListView.setAdapter(adapter);
+
+
         View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
-        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
-        final int index = getIntent().getIntExtra("index", 0);
 
 
         if(getIntent().hasExtra("recipe")) {
@@ -83,10 +99,9 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListA
         final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
         final int index = getIntent().getIntExtra("index", 0);
 
-        List<Ingredient> ingredientList = recipes.get(index).getIngredients();
         List<Step> stepList = recipes.get(index).getSteps();
 
-        recyclerView.setAdapter(new RecipeListAdapter(this, stepList, this));
+        recyclerView.setAdapter(new RecipeDetailAdapter(this, stepList, this));
     }
 
     @Override
