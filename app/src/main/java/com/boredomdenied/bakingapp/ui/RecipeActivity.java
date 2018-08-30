@@ -7,10 +7,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
@@ -91,19 +88,4 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
     }
 
-
-
-
-//    private String getAndFormatIngredients(List<Recipe> recipeList) {
-//
-//
-//        RecipeIngredient[] recipeIngredients = recipeList.get(1).getIngredients();
-//        String[] ingredients = new String[recipeIngredients.length];
-//        for (int i = 0; i < ingredients.length; i++) {
-//            ingredients[i] = recipeIngredients[i].getQuantityUnitNameString();
-//
-//
-//        }
-//        return TextUtils.join("\n", ingredients);
-//    }
 }
