@@ -32,11 +32,18 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeDetai
 
     private boolean mTwoPane;
     private TextView ingredients;
+    private List<Recipe> recipes;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+
+        if(savedInstanceState != null) {
+            recipes = savedInstanceState.getParcelableArrayList("recipes");
+            index = savedInstanceState.getInt("index");
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,4 +126,11 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeDetai
 
 
 
+    @Override
+    protected void onSaveInstanceState(@NonNull  Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList("recipes", (ArrayList<? extends Parcelable>) recipes);
+        outState.putInt("index", index);
+    }
 }
