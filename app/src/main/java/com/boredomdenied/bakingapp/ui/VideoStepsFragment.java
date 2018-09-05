@@ -1,19 +1,18 @@
 package com.boredomdenied.bakingapp.ui;
 
-import android.app.Activity;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boredomdenied.bakingapp.R;
 import com.boredomdenied.bakingapp.model.Step;
-
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -34,17 +33,15 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.List;
 
 
-
-
 public class VideoStepsFragment extends Fragment {
 
-//    public static final String ARG_ITEM_ID = "item_id";
-    private TextView step;
+//    private TextView step;
 
     private static final String KEY_PLAY_WHEN_READY = "play_when_ready";
     private static final String KEY_WINDOW = "window";
     private static final String KEY_POSITION = "position";
-
+    List<Step> stepList;
+    int index;
     private PlayerView playerView;
     private SimpleExoPlayer player;
     private boolean shouldAutoPlay;
@@ -52,7 +49,6 @@ public class VideoStepsFragment extends Fragment {
     private int currentWindow;
     private long playbackPosition;
     private String videoURL;
-
     private Timeline.Window window;
     private DataSource.Factory mediaDataSourceFactory;
     private DefaultTrackSelector trackSelector;
@@ -71,16 +67,9 @@ public class VideoStepsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle("Testing");
-            }
-
-
-                List<Step> stepList = getArguments().getParcelableArrayList("stepList");
-                int index = getArguments().getInt("index");
-                Log.d("Bundle: ", stepList.get(index).getDescription());
+        stepList = getArguments().getParcelableArrayList("stepList");
+        index = getArguments().getInt("index");
+        Log.d("Bundle: ", stepList.get(index).getDescription());
         videoURL = stepList.get(index).getVideoURL();
 
 
@@ -104,6 +93,11 @@ public class VideoStepsFragment extends Fragment {
     private void initializePlayer() {
 
 
+        if (getActivity().getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) playerView.getLayoutParams();
+            params.height = params.MATCH_PARENT;
+        }
 
         playerView.requestFocus();
         TrackSelection.Factory videoTrackSelectionFactory =
@@ -114,7 +108,7 @@ public class VideoStepsFragment extends Fragment {
         player.setPlayWhenReady(shouldAutoPlay);
 
 
-        if(videoURL.isEmpty()) {
+        if (videoURL.isEmpty()) {
             playerView.setVisibility(View.GONE);
         } else {
             playerView.setVisibility(View.VISIBLE);
@@ -134,9 +128,7 @@ public class VideoStepsFragment extends Fragment {
     }
 
 
-
-
-    private void releasePlayer () {
+    private void releasePlayer() {
         if (player != null) {
             updateStartPosition();
             shouldAutoPlay = player.getPlayWhenReady();
@@ -148,7 +140,7 @@ public class VideoStepsFragment extends Fragment {
 
 
     @Override
-    public void onStart () {
+    public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
 
@@ -157,7 +149,7 @@ public class VideoStepsFragment extends Fragment {
     }
 
     @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
         if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer();
@@ -165,7 +157,7 @@ public class VideoStepsFragment extends Fragment {
     }
 
     @Override
-    public void onPause () {
+    public void onPause() {
         super.onPause();
         if (Util.SDK_INT <= 23) {
             releasePlayer();
@@ -173,7 +165,7 @@ public class VideoStepsFragment extends Fragment {
     }
 
     @Override
-    public void onStop () {
+    public void onStop() {
         super.onStop();
         if (Util.SDK_INT > 23) {
             releasePlayer();
@@ -181,7 +173,7 @@ public class VideoStepsFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState (Bundle outState){
+    public void onSaveInstanceState(Bundle outState) {
         updateStartPosition();
 
         outState.putBoolean(KEY_PLAY_WHEN_READY, playWhenReady);
@@ -190,21 +182,20 @@ public class VideoStepsFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    private void updateStartPosition () {
+    private void updateStartPosition() {
         playbackPosition = player.getCurrentPosition();
         currentWindow = player.getCurrentWindowIndex();
         playWhenReady = player.getPlayWhenReady();
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
-
-                playerView = rootView.findViewById(R.id.player_view);
-                step = rootView.findViewById(R.id.step);
+        View rootView = inflater.inflate(R.layout.video_player, container, false);
+        playerView = rootView.findViewById(R.id.player_view);
+//        step = rootView.findViewById(R.id.step);
+//        step.setText(stepList.get(index).getDescription());
 
         return rootView;
     }

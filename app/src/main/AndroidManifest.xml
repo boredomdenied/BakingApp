@@ -20,26 +20,30 @@
         </activity>
         <activity
             android:name=".ui.RecipeListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_recipe_list"
-            android:parentActivityName=".ui.RecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.RecipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.boredomdenied.bakingapp.ui.RecipeActivity" />
         </activity>
         <activity
             android:name=".ui.RecipeDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_recipe_detail"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.RecipeListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="com.google.android.exoplayer.demo.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:scheme="content"/>
-                <data android:scheme="asset"/>
-                <data android:scheme="file"/>
+                <action android:name="com.google.android.exoplayer.demo.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="content" />
+                <data android:scheme="asset" />
+                <data android:scheme="file" />
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

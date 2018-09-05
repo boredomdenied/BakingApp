@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:name="com.boredomdenied.bakingapp.ui.RecipeListFragment"
@@ -10,21 +9,21 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:id="@+id/ingredients" />
+        android:textAppearance="?attr/textAppearanceListItem" />
 
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/recipe_list"
-    android:name="com.boredomdenied.bakingapp.ui.RecipeListFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.RecipeListActivity"
-    tools:listitem="@layout/recipe_list_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recipe_list"
+        android:name="com.boredomdenied.bakingapp.ui.RecipeListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ui.RecipeListActivity"
+        tools:listitem="@layout/recipe_list_content" />
 
 </LinearLayout>

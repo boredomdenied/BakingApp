@@ -12,8 +12,6 @@ import com.boredomdenied.bakingapp.model.Recipe;
 
 import java.util.List;
 
-import static java.lang.String.valueOf;
-
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private List<Recipe> recipeList;
@@ -21,18 +19,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private ListItemClickListener onClickListener;
 
 
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
-    }
-
-
-
-    public RecipeAdapter(Context context, List<Recipe> recipeList, ListItemClickListener listener){
+    public RecipeAdapter(Context context, List<Recipe> recipeList, ListItemClickListener listener) {
         this.onClickListener = listener;
         this.recipeList = recipeList;
         this.context = context;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,12 +40,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     }
 
-
     @Override
     public int getItemCount() {
         return recipeList.size();
     }
 
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

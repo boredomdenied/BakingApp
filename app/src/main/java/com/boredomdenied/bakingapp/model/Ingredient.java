@@ -1,16 +1,10 @@
-
 package com.boredomdenied.bakingapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
-public class Ingredient implements Parcelable
-{
+public class Ingredient implements Parcelable {
 
-    private double quantity;
-    private String measure;
-    private String ingredient;
     public final static Parcelable.Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
 
 
@@ -25,8 +19,10 @@ public class Ingredient implements Parcelable
             return (new Ingredient[size]);
         }
 
-    }
-            ;
+    };
+    private double quantity;
+    private String measure;
+    private String ingredient;
 
     protected Ingredient(Parcel in) {
         this.quantity = ((double) in.readValue((double.class.getClassLoader())));
@@ -36,13 +32,11 @@ public class Ingredient implements Parcelable
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public Ingredient() {
     }
 
     /**
-     *
      * @param measure
      * @param ingredient
      * @param quantity
@@ -85,7 +79,7 @@ public class Ingredient implements Parcelable
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

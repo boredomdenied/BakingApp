@@ -1,50 +1,52 @@
 package com.boredomdenied.bakingapp.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.boredomdenied.bakingapp.R;
+import com.boredomdenied.bakingapp.model.Step;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private TextView step;
-
+    private List<Step> stepList;
+    private int index;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        step = findViewById(R.id.step);
 
+        initialOrientation();
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        final int index = getIntent().getIntExtra("stepIndex", 0);
-
+        index = getIntent().getIntExtra("stepIndex", 0);
+        stepList = getIntent().getParcelableArrayListExtra("recipeSteps");
 
         if (savedInstanceState == null) {
 
 
             Bundle arguments = new Bundle();
-            arguments.putParcelableArrayList("stepList", getIntent().getParcelableArrayListExtra("recipeSteps"));
+            arguments.putParcelableArrayList("stepList", (ArrayList<? extends Parcelable>) stepList);
             arguments.putInt("index", index);
             VideoStepsFragment fragment = new VideoStepsFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
+
+            step = findViewById(R.id.step);
+            step.setText(stepList.get(index).getDescription());
 
         }
     }
@@ -65,5 +67,71 @@ public class RecipeDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        checkOrientation(newConfig);
+    }
+
+    private void checkOrientation(Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+
+            step.setVisibility(View.GONE);
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().show();
+            }
+
+            step.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    private void initialOrientation() {
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+            step.setVisibility(View.GONE);
+
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT) {
+
+            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().show();
+            }
+
+            step.setVisibility(View.VISIBLE);
+        }
+
     }
 }

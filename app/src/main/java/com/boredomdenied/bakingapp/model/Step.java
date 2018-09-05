@@ -1,20 +1,12 @@
-
 package com.boredomdenied.bakingapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
 
-public class Step implements Parcelable
-{
+public class Step implements Parcelable {
 
 
-    private Integer id;
-    private String shortDescription;
-    private String description;
-    private String videoURL;
-    private String thumbnailURL;
     public final static Parcelable.Creator<Step> CREATOR = new Creator<Step>() {
 
 
@@ -29,8 +21,12 @@ public class Step implements Parcelable
             return (new Step[size]);
         }
 
-    }
-            ;
+    };
+    private Integer id;
+    private String shortDescription;
+    private String description;
+    private String videoURL;
+    private String thumbnailURL;
 
     protected Step(Parcel in) {
         this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -42,13 +38,11 @@ public class Step implements Parcelable
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public Step() {
     }
 
     /**
-     *
      * @param id
      * @param shortDescription
      * @param description
@@ -113,7 +107,7 @@ public class Step implements Parcelable
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

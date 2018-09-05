@@ -4,22 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
-
-import com.boredomdenied.bakingapp.adapter.RecipeDetailAdapter;
+import com.boredomdenied.bakingapp.adapter.StepAdapter;
 import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.model.Step;
@@ -27,53 +22,42 @@ import com.boredomdenied.bakingapp.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeListActivity extends AppCompatActivity implements RecipeDetailAdapter.StepItemClickListener {
+public class RecipeListActivity extends AppCompatActivity implements StepAdapter.StepItemClickListener {
 
 
     private boolean mTwoPane;
     private TextView ingredients;
+    private TextView step;
     private List<Recipe> recipes;
+    private List<Step> stepList;
     private int index;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        if(savedInstanceState != null) {
-            recipes = savedInstanceState.getParcelableArrayList("recipes");
-            index = savedInstanceState.getInt("index");
-        }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         if (findViewById(R.id.recipe_detail_container) != null) {
-
             mTwoPane = true;
         }
 
-        /*
-        *   We need to populate the ingredients TextView
-        */
 
-        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
-        final int index = getIntent().getIntExtra("index", 0);
+        /*
+         *   We need to populate the ingredients TextView
+         */
+        recipes = getIntent().getParcelableArrayListExtra("recipe");
+        index = getIntent().getIntExtra("index", 0);
+
+
         List<Ingredient> ingredientList = recipes.get(index).getIngredients();
 
         ingredients = findViewById(R.id.ingredients);
-
         ingredients.setText("Ingredents:" + "\n\n");
 
         for (int i = 0; i < ingredientList.size(); i++) {
-        ingredients.append(ingredientList.get(i).getIngredient() + "\n");
+            ingredients.append(ingredientList.get(i).getIngredient() + "\n");
         }
 
 
@@ -82,7 +66,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeDetai
         setupRecyclerView((RecyclerView) recyclerView);
 
 
-        if(getIntent().hasExtra("recipe")) {
+        if (getIntent().hasExtra("recipe")) {
             Toast.makeText(this, "Have Recipe: " + recipes.get(index).getName(), Toast.LENGTH_SHORT).show();
             Log.d("RecipeList:", recipes.get(index).getName());
 
@@ -90,6 +74,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeDetai
             Toast.makeText(this, "No RecipeList", Toast.LENGTH_SHORT).show();
 
         }
+
     }
 
 
@@ -104,33 +89,42 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeDetai
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
-        final int index = getIntent().getIntExtra("index", 0);
-        List<Step> stepList = recipes.get(index).getSteps();
 
-        recyclerView.setAdapter(new RecipeDetailAdapter(this, stepList, this));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        stepList = recipes.get(index).getSteps();
+        recyclerView.setAdapter(new StepAdapter(this, stepList, this));
     }
+
 
     @Override
     public void onStepItemClick(int clickedItemIndex) {
-        final List<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipe");
-        final int index = getIntent().getIntExtra("index", 0);
-        List<Step> stepList = recipes.get(index).getSteps();
 
-        Intent intent = new Intent(this, RecipeDetailActivity.class);
-        intent.putParcelableArrayListExtra("recipeSteps", (ArrayList<? extends Parcelable>) stepList);
-        intent.putExtra("stepIndex", clickedItemIndex);
-        this.startActivity(intent);
+
+        if (mTwoPane) {
+            stepList = recipes.get(index).getSteps();
+            Bundle arguments = new Bundle();
+            arguments.putParcelableArrayList("stepList", (ArrayList<? extends Parcelable>) stepList);
+            arguments.putInt("index", clickedItemIndex);
+            VideoStepsFragment fragment = new VideoStepsFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.recipe_detail_container, fragment)
+                    .commit();
+
+            step = findViewById(R.id.step);
+            step.setText("");
+            step.setText(stepList.get(clickedItemIndex).getDescription());
+
+
+        } else {
+            stepList = recipes.get(index).getSteps();
+            Intent intent = new Intent(this, RecipeDetailActivity.class);
+            intent.putParcelableArrayListExtra("recipeSteps", (ArrayList<? extends Parcelable>) stepList);
+            intent.putExtra("stepIndex", clickedItemIndex);
+            this.startActivity(intent);
+
+        }
+
     }
 
-
-
-    @Override
-    protected void onSaveInstanceState(@NonNull  Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putParcelableArrayList("recipes", (ArrayList<? extends Parcelable>) recipes);
-        outState.putInt("index", index);
-    }
 }
