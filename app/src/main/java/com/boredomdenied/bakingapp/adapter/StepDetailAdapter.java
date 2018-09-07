@@ -17,26 +17,9 @@ public class StepDetailAdapter extends RecyclerView.Adapter<StepDetailAdapter.Cu
     private List<Step> stepList;
     private Context context;
 
-    public StepDetailAdapter(Context context, List<Step> stepList){
+    public StepDetailAdapter(Context context, List<Step> stepList) {
         this.stepList = stepList;
         this.context = context;
-    }
-
-
-    class CustomViewHolder extends RecyclerView.ViewHolder {
-
-
-        public final View mView;
-
-        TextView txtName;
-        TextView txtServings;
-
-        CustomViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-
-            txtName = mView.findViewById(R.id.name);
-        }
     }
 
     @Override
@@ -53,12 +36,26 @@ public class StepDetailAdapter extends RecyclerView.Adapter<StepDetailAdapter.Cu
         holder.txtName.setText(String.valueOf((step.getDescription())));
 
 
-
-
     }
 
     @Override
     public int getItemCount() {
         return stepList.size();
+    }
+
+    class CustomViewHolder extends RecyclerView.ViewHolder {
+
+
+        public final View mView;
+
+        TextView txtName;
+        TextView txtServings;
+
+        CustomViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+
+            txtName = mView.findViewById(R.id.name);
+        }
     }
 }

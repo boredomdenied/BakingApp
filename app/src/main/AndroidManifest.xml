@@ -37,6 +37,7 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="com.google.android.exoplayer.demo.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="http" />
@@ -45,10 +46,21 @@
                 <data android:scheme="asset" />
                 <data android:scheme="file" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.boredomdenied.bakingapp.ui.RecipeListActivity" />
         </activity>
+
+        <receiver android:name=".RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_provider_info" />
+        </receiver>
     </application>
 
 </manifest>

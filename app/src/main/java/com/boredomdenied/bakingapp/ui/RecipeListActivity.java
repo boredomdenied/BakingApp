@@ -37,6 +37,7 @@ public class RecipeListActivity extends AppCompatActivity implements StepAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+        step = findViewById(R.id.step);
 
 
         if (findViewById(R.id.recipe_detail_container) != null) {
@@ -44,9 +45,6 @@ public class RecipeListActivity extends AppCompatActivity implements StepAdapter
         }
 
 
-        /*
-         *   We need to populate the ingredients TextView
-         */
         recipes = getIntent().getParcelableArrayListExtra("recipe");
         index = getIntent().getIntExtra("index", 0);
 
@@ -64,16 +62,6 @@ public class RecipeListActivity extends AppCompatActivity implements StepAdapter
         View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
-
-        if (getIntent().hasExtra("recipe")) {
-            Toast.makeText(this, "Have Recipe: " + recipes.get(index).getName(), Toast.LENGTH_SHORT).show();
-            Log.d("RecipeList:", recipes.get(index).getName());
-
-        } else {
-            Toast.makeText(this, "No RecipeList", Toast.LENGTH_SHORT).show();
-
-        }
 
     }
 
@@ -111,7 +99,6 @@ public class RecipeListActivity extends AppCompatActivity implements StepAdapter
                     .replace(R.id.recipe_detail_container, fragment)
                     .commit();
 
-            step = findViewById(R.id.step);
             step.setText("");
             step.setText(stepList.get(clickedItemIndex).getDescription());
 

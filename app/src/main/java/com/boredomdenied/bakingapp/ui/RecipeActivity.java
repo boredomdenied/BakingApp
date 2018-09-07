@@ -1,6 +1,7 @@
 package com.boredomdenied.bakingapp.ui;
 
-import android.app.ProgressDialog;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -11,7 +12,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.boredomdenied.bakingapp.R;
+import com.boredomdenied.bakingapp.RecipeWidgetProvider;
 import com.boredomdenied.bakingapp.adapter.RecipeAdapter;
+import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Recipe;
 import com.boredomdenied.bakingapp.network.GetDataService;
 import com.boredomdenied.bakingapp.network.RetrofitClientInstance;
@@ -25,7 +28,7 @@ import retrofit2.Response;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.ListItemClickListener {
 
-    public List<Recipe> recipeList;
+    private List<Recipe> recipeList;
     private RecipeAdapter adapter;
     private RecyclerView recyclerView;
 
@@ -33,6 +36,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
@@ -69,12 +73,18 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
     @Override
     public void onListItemClick(int clickedItemIndex) {
 
+        List<Ingredient> ingredients = recipeList.get(clickedItemIndex).getIngredients();
+
+        Intent widgetIntent = new Intent(this, RecipeWidgetProvider.class);
+        widgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        widgetIntent.putExtra("recipe", recipeList.get(clickedItemIndex).getName());
+        widgetIntent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
+
 
         Intent intent = new Intent(this, RecipeListActivity.class);
         intent.putParcelableArrayListExtra("recipe", (ArrayList<? extends Parcelable>) recipeList);
         intent.putExtra("index", clickedItemIndex);
-        Log.d("onListItemClick", "onClick: clicked on " + recipeList.get(clickedItemIndex).getId());
-
+        this.sendBroadcast(widgetIntent);
         this.startActivity(intent);
 
 

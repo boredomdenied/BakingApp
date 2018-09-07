@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.boredomdenied.bakingapp.R;
-import com.boredomdenied.bakingapp.model.Ingredient;
 import com.boredomdenied.bakingapp.model.Step;
 
 import java.util.List;
@@ -20,18 +19,12 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
     private StepItemClickListener onClickListener;
 
 
-    public interface StepItemClickListener {
-        void onStepItemClick(int clickedItemIndex);
-    }
-
-
     public RecipeDetailAdapter(Context context,
-                               List<Step> stepList, StepItemClickListener listener){
+                               List<Step> stepList, StepItemClickListener listener) {
         this.onClickListener = listener;
         this.stepList = stepList;
         this.context = context;
     }
-
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,6 +43,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
     @Override
     public int getItemCount() {
         return stepList.size();
+    }
+
+    public interface StepItemClickListener {
+        void onStepItemClick(int clickedItemIndex);
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
