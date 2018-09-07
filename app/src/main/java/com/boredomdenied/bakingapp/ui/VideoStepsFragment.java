@@ -34,7 +34,6 @@ import java.util.List;
 
 public class VideoStepsFragment extends Fragment {
 
-//    private TextView step;
 
     private static final String KEY_PLAY_WHEN_READY = "play_when_ready";
     private static final String KEY_WINDOW = "window";
@@ -193,8 +192,6 @@ public class VideoStepsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.video_player, container, false);
         playerView = rootView.findViewById(R.id.player_view);
-//        step = rootView.findViewById(R.id.step);
-//        step.setText(stepList.get(index).getDescription());
 
         return rootView;
     }

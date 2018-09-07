@@ -1,7 +1,6 @@
 package com.boredomdenied.bakingapp;
 
 import android.content.ComponentName;
-import android.provider.ContactsContract;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
