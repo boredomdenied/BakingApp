@@ -42,7 +42,8 @@ public class RecipeActivityTest {
 
     @Test
     public void checkStartsListActivity() {
-        onView(withId(R.id.customRecyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
+        onView(withId(R.id.customRecyclerView)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(1,click()));
         intended(hasComponent(new ComponentName(getTargetContext(), RecipeListActivity.class)));
         Intents.release();
 

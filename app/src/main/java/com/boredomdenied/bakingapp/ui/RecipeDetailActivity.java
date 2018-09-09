@@ -39,7 +39,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putParcelableArrayList("stepList", (ArrayList<? extends Parcelable>) stepList);
             arguments.putInt("index", index);
-            VideoStepsFragment fragment = new VideoStepsFragment();
+            VideoPlayerFragment fragment = new VideoPlayerFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)

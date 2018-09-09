@@ -32,7 +32,7 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.List;
 
 
-public class VideoStepsFragment extends Fragment {
+public class VideoPlayerFragment extends Fragment {
 
 
     private static final String KEY_PLAY_WHEN_READY = "play_when_ready";
@@ -57,7 +57,7 @@ public class VideoStepsFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public VideoStepsFragment() {
+    public VideoPlayerFragment() {
     }
 
     @Override

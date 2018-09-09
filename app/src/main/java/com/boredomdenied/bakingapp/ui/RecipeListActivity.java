@@ -91,7 +91,7 @@ public class RecipeListActivity extends AppCompatActivity implements StepAdapter
             Bundle arguments = new Bundle();
             arguments.putParcelableArrayList("stepList", (ArrayList<? extends Parcelable>) stepList);
             arguments.putInt("index", clickedItemIndex);
-            VideoStepsFragment fragment = new VideoStepsFragment();
+            VideoPlayerFragment fragment = new VideoPlayerFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
@@ -99,6 +99,7 @@ public class RecipeListActivity extends AppCompatActivity implements StepAdapter
 
             step.setText("");
             step.setText(stepList.get(clickedItemIndex).getDescription());
+            stepList.get(clickedItemIndex).getThumbnailURL();
 
 
         } else {

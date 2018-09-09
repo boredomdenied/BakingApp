@@ -29,5 +29,4 @@
             android:textSize="22sp" />
     </LinearLayout>
 
-
 </android.support.constraint.ConstraintLayout>

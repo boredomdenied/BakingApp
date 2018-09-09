@@ -20,7 +20,6 @@
         </activity>
         <activity
             android:name=".ui.RecipeListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_recipe_list"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.RecipeActivity">
@@ -30,7 +29,6 @@
         </activity>
         <activity
             android:name=".ui.RecipeDetailActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_recipe_detail"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.RecipeListActivity"
