@@ -70,40 +70,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        checkOrientation(newConfig);
-    }
-
-    private void checkOrientation(Configuration newConfig) {
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
-            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
-
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().hide();
-            }
-
-            step.setVisibility(View.GONE);
-
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
-
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().show();
-            }
-
-            step.setVisibility(View.VISIBLE);
-
-        }
-    }
 
     private void initialOrientation() {
         if (getResources().getConfiguration().orientation ==
