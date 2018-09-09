@@ -81,7 +81,7 @@ public class VideoPlayerFragment extends Fragment {
             playbackPosition = savedInstanceState.getLong(KEY_POSITION);
         }
 
-        shouldAutoPlay = true;
+        shouldAutoPlay = playWhenReady;
         bandwidthMeter = new DefaultBandwidthMeter();
         mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), null), (TransferListener<? super DataSource>) bandwidthMeter);
         window = new Timeline.Window();
