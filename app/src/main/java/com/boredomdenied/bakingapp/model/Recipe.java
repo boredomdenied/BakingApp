@@ -13,33 +13,19 @@ import java.util.List;
 public class Recipe implements Parcelable {
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
-        @Override
         public Recipe createFromParcel(Parcel source) {
             return new Recipe(source);
         }
-
-        @Override
         public Recipe[] newArray(int size) {
             return new Recipe[size];
         }
     };
-    @SerializedName("id")
-    @Expose
+
     private Integer id;
-    @SerializedName("name")
-    @Expose
     private String name;
-    @SerializedName("ingredients")
-    @Expose
     private List<Ingredient> ingredients = null;
-    @SerializedName("steps")
-    @Expose
     private List<Step> steps = null;
-    @SerializedName("servings")
-    @Expose
     private Integer servings;
-    @SerializedName("image")
-    @Expose
     private String image;
     private int imageId;
 

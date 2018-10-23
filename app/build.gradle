@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: "com.jaredsburrows.spoon"
 
 android {
     compileSdkVersion 27
@@ -30,6 +31,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation "com.squareup.spoon:spoon-client:2.0.0-SNAPSHOT"
 
 
     implementation 'com.android.support:support-v4:27.1.1'

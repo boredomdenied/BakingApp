@@ -59,6 +59,9 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
 
     private void generateDataList(List<Recipe> recipeList) {
 
+//        Toast.makeText(RecipeActivity.this, recipeList.toString(), Toast.LENGTH_SHORT).show();
+
+
         recyclerView = findViewById(R.id.customRecyclerView);
         assert recyclerView != null;
         adapter = new RecipeAdapter(this, recipeList, this);
